@@ -382,30 +382,23 @@ Expected:
 
 ```mermaid
 flowchart TD
-    P1["DELETE with punctuation\ndelete; from orders\nnot blocked"] --> S1["Used regex instead of split\nre.findall strips punctuation\nbefore keyword check"]
-    P2["LLM hallucinated\nfake DROP response"] --> S2["Added dangerous word check\nbefore sending to LLM\nNever reaches Cohere"]
-    P3["Old results showing\nbetween queries"] --> S3["Clear all fields\nbefore each new request"]
-    P4["Browser blocked API\nfrom local file"] --> S4["Used python3 -m http.server\nto serve frontend locally"]
+    P1["LLM hallucinated\nfake DROP response"] --> S1["Added dangerous word check\nbefore sending to LLM\nNever reaches Cohere"]
+    P2["Browser blocked API\nfrom local file"] --> S2["Used python3 -m http.server\nto serve frontend locally"]
+    P3["CORS blocked\nbrowser requests"] --> S3["Added CORS headers in Lambda\nand enabled CORS in\nAPI Gateway via CLI"]
 
     style P1 fill:#FF4444,color:#fff
     style P2 fill:#FF4444,color:#fff
     style P3 fill:#FF4444,color:#fff
-    style P4 fill:#FF4444,color:#fff
     style S1 fill:#00AA00,color:#fff
     style S2 fill:#00AA00,color:#fff
     style S3 fill:#00AA00,color:#fff
-    style S4 fill:#00AA00,color:#fff
 ```
 
 | Problem | Root Cause | Solution |
 |---|---|---|
-| `delete;` bypassed keyword check | Semicolon attached to word, split missed it | Used `re.findall(r"[a-zA-Z]+")` to strip punctuation first |
 | LLM hallucinated DROP response | Question reached Cohere before validation | Block dangerous words before sending to LLM |
-| Old results showing between queries | DOM not cleared between requests | Clear all fields at start of each new request |
 | Browser blocked API from `file://` | CORS blocks local file requests | Serve frontend via `python3 -m http.server` |
 | CORS blocked browser requests | API Gateway not configured for CORS | Added CORS headers in Lambda and enabled CORS in API Gateway via CLI |
-
----
 
 ## What I Would Add Next
 
