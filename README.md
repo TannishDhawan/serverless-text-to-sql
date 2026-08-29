@@ -17,34 +17,64 @@ No SQL knowledge needed. No servers to manage. Zero cost when idle.
 
 ## What Is This?
 
-A serverless API that converts natural language questions into SQL queries,
-runs them against a real database, and returns plain English answers.
+A serverless pipeline that lets anyone ask business questions in plain English
+and get instant, accurate answers backed by real SQL queries and raw data.
 
-Instead of writing:
-```sql
-SELECT p.product_name, SUM(oi.quantity * oi.unit_price) AS revenue
-FROM order_items oi
-JOIN products p ON oi.product_id = p.product_id
-GROUP BY p.product_id
-ORDER BY revenue DESC
-LIMIT 5;
-```
-
-You just ask:
-```
-What are the top 5 products by revenue?
-```
-
-And get back:
-```
-1. AWS Handbook — $70,006.51
-2. Lamp — $61,401.20
-3. Jump Rope — $61,256.09
-4. SQL Basics — $54,868.52
-5. ML Book — $54,243.60
-```
+No SQL knowledge needed. No servers to manage. No cost when idle.
 
 ---
+
+### See It In Action
+
+**You ask:**
+```
+What category has the most revenue?
+```
+
+**You get back:**
+
+| | Output |
+|---|---|
+| **Answer** | Plain English summary |
+| **Generated SQL** | Full transparent query |
+| **Raw Data** | Actual database results |
+
+---
+
+**Answer**
+```
+- Books:       $268,016.58
+- Home:        $200,764.71
+- Sports:      $192,135.56
+- Electronics: $166,006.86
+- Clothing:    $153,973.68
+```
+
+**Generated SQL**
+```sql
+SELECT p.category,
+       SUM(oi.quantity * oi.unit_price) AS total_revenue
+FROM order_items oi
+JOIN products p ON oi.product_id = p.product_id
+GROUP BY p.category
+ORDER BY total_revenue DESC
+LIMIT 50;
+```
+
+**Raw Data**
+
+| Category | Total Revenue |
+|---|---|
+| Books | $268,016.58 |
+| Home | $200,764.71 |
+| Sports | $192,135.56 |
+| Electronics | $166,006.86 |
+| Clothing | $153,973.68 |
+
+---
+
+> Every answer shows the generated SQL and raw data so results are always
+> transparent and verifiable — no black box AI guessing.
 
 ## The Problem This Solves
 
