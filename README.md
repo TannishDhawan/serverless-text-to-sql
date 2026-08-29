@@ -52,8 +52,7 @@ What category has the most revenue?
 
 **Generated SQL**
 ```sql
-SELECT p.category,
-       SUM(oi.quantity * oi.unit_price) AS total_revenue
+SELECT p.category,SUM(oi.quantity * oi.unit_price) AS total_revenue
 FROM order_items oi
 JOIN products p ON oi.product_id = p.product_id
 GROUP BY p.category
